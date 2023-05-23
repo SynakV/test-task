@@ -1,4 +1,6 @@
-export const postRequest = <T>(body: T) => {
+import { ErrorType } from "./types";
+
+export const postRequest = <T>(body: T): Promise<T & ErrorType> => {
   return fetch("https://jsonplaceholder.typicode.com/posts", {
     method: "POST",
     body: JSON.stringify(body),

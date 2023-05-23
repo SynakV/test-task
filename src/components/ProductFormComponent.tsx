@@ -28,7 +28,7 @@ export const ProductFormComponent = () => {
     dropdown: DROPDOWN_OPTIONS[0],
   });
 
-  const handleSetForm = <T,>(
+  const handleSetForm = (
     field: keyof FormType,
     value: string | PictureType
   ) => {
@@ -39,7 +39,7 @@ export const ProductFormComponent = () => {
   };
 
   const handleSendRequest = async (form: FormType) => {
-    const response = await postRequest(form);
+    const response = await postRequest<FormType>(form);
 
     if (response.error) {
       setStatus(response.message);
