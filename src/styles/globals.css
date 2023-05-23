@@ -45,3 +45,11 @@ body {
   text-align: center;
   position: absolute;
 }
+
+.status__error {
+  color: red;
+}
+
+.status__success {
+  color: lightgreen;
+}

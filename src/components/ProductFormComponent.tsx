@@ -1,12 +1,12 @@
 import { Form } from "./Form/Form";
 import { Picture } from "./Form/Picture";
 import { postRequest } from "./utils/api";
-import type { PictureType } from "./utils/types";
 import React, { useState, useEffect } from "react";
+import type { ErrorType, PictureType } from "./utils/types";
 import {
+  RADIO_OPTIONS,
   DEFAULT_STATUS,
   DROPDOWN_OPTIONS,
-  RADIO_OPTIONS,
 } from "./utils/constants";
 
 type FormType = {
@@ -19,7 +19,7 @@ type FormType = {
 export const ProductFormComponent = () => {
   const { Field, Radio, Dropdown, Telephone, Image } = Form;
 
-  const [status, setStatus] = useState(DEFAULT_STATUS);
+  const [status, setStatus] = useState<Partial<ErrorType>>(DEFAULT_STATUS);
 
   const [form, setForm] = useState<FormType>({
     telephone: "",
@@ -42,9 +42,9 @@ export const ProductFormComponent = () => {
     const response = await postRequest<FormType>(form);
 
     if (response.error) {
-      setStatus(response.message);
+      setStatus(response);
     } else {
-      setStatus("Success!");
+      setStatus({ message: "Success!" });
     }
   };
 
@@ -58,6 +58,13 @@ export const ProductFormComponent = () => {
   }, [form]);
 
   const { radio, dropdown, telephone, picture } = form;
+
+  const statusClassName =
+    status.message !== DEFAULT_STATUS.message
+      ? status.error
+        ? "status__error"
+        : "status__success"
+      : "";
 
   return (
     <div className="main">
@@ -103,7 +110,7 @@ export const ProductFormComponent = () => {
         </Field>
       </div>
 
-      <span className="status">{status}</span>
+      <span className={`status ${statusClassName}`}>{status.message}</span>
     </div>
   );
 };
