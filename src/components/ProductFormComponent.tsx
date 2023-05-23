@@ -28,7 +28,10 @@ export const ProductFormComponent = () => {
     dropdown: DROPDOWN_OPTIONS[0],
   });
 
-  const handleSetForm = (field: keyof FormType, value: any) => {
+  const handleSetForm = <T,>(
+    field: keyof FormType,
+    value: string | PictureType
+  ) => {
     setForm((prev) => ({
       ...prev,
       [field]: value,
