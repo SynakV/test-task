@@ -46,11 +46,10 @@ export const ProductFormComponent = () => {
   };
 
   useEffect(() => {
-    setStatus(DEFAULT_STATUS);
-
     const postRequest = setTimeout(() => {
+      setStatus(DEFAULT_STATUS);
       handleSendRequest(form);
-    }, 2000);
+    }, 500);
 
     return () => clearTimeout(postRequest);
   }, [form]);
