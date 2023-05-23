@@ -20,18 +20,16 @@ export const Telephone = ({ value, onChange }: Telephone) => {
     <div className="telephone">
       <input
         type="tel"
-        id="number"
         value={value}
-        name="number"
         placeholder="123-456-7890"
         onChange={handleInputChange}
         className="telephone__input"
         pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-        onBeforeInputCapture={() => setTouched(true)}
+        onBeforeInput={() => setTouched(true)}
       />
       {!isValid && (
         <span className="telephone__error">
-          Input is invalid. Number should look like this: 123-456-7890
+          Number is invalid. It should look like this: 123-456-7890
         </span>
       )}
     </div>

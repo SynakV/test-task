@@ -1,6 +1,6 @@
 import React from "react";
 import NextImage from "next/image";
-import { PictureType } from "./Image";
+import type { PictureType } from "../utils/types";
 
 export const Picture = ({ image, position }: PictureType) => {
   return (

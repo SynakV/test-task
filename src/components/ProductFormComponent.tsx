@@ -1,58 +1,61 @@
 import { Form } from "./Form/Form";
 import { Picture } from "./Form/Picture";
-import { PictureType } from "./Form/Image";
-import React, { useState, ChangeEvent, useEffect } from "react";
+import { postRequest } from "./utils/api";
+import type { PictureType } from "./utils/types";
+import React, { useState, useEffect } from "react";
+import {
+  DEFAULT_STATUS,
+  DROPDOWN_OPTIONS,
+  RADIO_OPTIONS,
+} from "./utils/constants";
 
-const RADIO_OPTIONS = ["123", "456", "789"];
-const DROPDOWN_OPTIONS = ["qwe", "rty", "uio", "asd", "fgh"];
+type FormType = {
+  radio: string;
+  dropdown: string;
+  telephone: string;
+  picture: PictureType | null;
+};
 
 export const ProductFormComponent = () => {
   const { Field, Radio, Dropdown, Telephone, Image } = Form;
 
-  const [telephone, setTelephone] = useState<string>("");
-  const [radio, setRadio] = useState<string>(RADIO_OPTIONS[0]);
-  const [picture, setPicture] = useState<PictureType | null>(null);
-  const [dropdown, setDropdown] = useState<string>(DROPDOWN_OPTIONS[0]);
+  const [status, setStatus] = useState(DEFAULT_STATUS);
 
-  const result = {
-    radio,
-    dropdown,
-    telephone,
-    picture,
+  const [form, setForm] = useState<FormType>({
+    telephone: "",
+    picture: null,
+    radio: RADIO_OPTIONS[0],
+    dropdown: DROPDOWN_OPTIONS[0],
+  });
+
+  const handleSetForm = (field: keyof FormType, value: any) => {
+    setForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  console.log(result);
+  const handleSendRequest = async (form: FormType) => {
+    const response = await postRequest(form);
 
-  const handleSetRadio = (value: string) => {
-    setRadio(value);
-  };
-
-  const handleSetDropdown = (e: ChangeEvent<HTMLSelectElement>) => {
-    setDropdown(e.target.value);
-  };
-
-  const handleSetTelephone = (e: ChangeEvent<HTMLInputElement>) => {
-    setTelephone(e.target.value);
-  };
-
-  const handleSetPicture = (picture: PictureType) => {
-    setPicture(picture);
+    if (response.error) {
+      setStatus(response.message);
+    } else {
+      setStatus("Success!");
+    }
   };
 
   useEffect(() => {
-    // fetch("https://eog44nwdg9l8mhw.m.pipedream.net", {
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     test: "event",
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => console.log(data));
-  }, []);
+    setStatus(DEFAULT_STATUS);
+
+    const postRequest = setTimeout(() => {
+      handleSendRequest(form);
+    }, 2000);
+
+    return () => clearTimeout(postRequest);
+  }, [form]);
+
+  const { radio, dropdown, telephone, picture } = form;
 
   return (
     <div className="main">
@@ -60,24 +63,30 @@ export const ProductFormComponent = () => {
         <span className="title">Form</span>
         <Field label="Radio">
           <Radio.Group
-            name="my-radios"
+            name="radios"
             defaultChecked={radio}
             options={RADIO_OPTIONS}
-            setRadio={handleSetRadio}
+            setRadio={(value) => handleSetForm("radio", value)}
           />
         </Field>
         <Field label="Dropdown">
           <Dropdown
             defaultValue={dropdown}
             options={DROPDOWN_OPTIONS}
-            onChange={handleSetDropdown}
+            onChange={(e) => handleSetForm("dropdown", e.target.value)}
           />
         </Field>
         <Field label="Telephone">
-          <Telephone value={telephone} onChange={handleSetTelephone} />
+          <Telephone
+            value={telephone}
+            onChange={(e) => handleSetForm("telephone", e.target.value)}
+          />
         </Field>
         <Field label="Image">
-          <Image alt="image" updatePicture={handleSetPicture} />
+          <Image
+            alt="image"
+            updatePicture={(picture) => handleSetForm("picture", picture)}
+          />
         </Field>
       </main>
       <div className="result">
@@ -91,6 +100,8 @@ export const ProductFormComponent = () => {
           )}
         </Field>
       </div>
+
+      <span className="status">{status}</span>
     </div>
   );
 };

@@ -9,11 +9,7 @@ import {
 } from "react";
 import { Form } from "./Form";
 import { Picture } from "./Picture";
-
-export type PictureType = {
-  image?: string;
-  position: string;
-};
+import type { PictureType } from "../utils/types";
 
 interface Image {
   alt: string;
