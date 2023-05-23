@@ -68,46 +68,48 @@ export const ProductFormComponent = () => {
 
   return (
     <div className="main">
-      <main className="form">
-        <span className="title">Form</span>
-        <Field label="Radio">
-          <Radio.Group
-            name="radios"
-            defaultChecked={radio}
-            options={RADIO_OPTIONS}
-            setRadio={(value) => handleSetForm("radio", value)}
-          />
-        </Field>
-        <Field label="Dropdown">
-          <Dropdown
-            defaultValue={dropdown}
-            options={DROPDOWN_OPTIONS}
-            onChange={(e) => handleSetForm("dropdown", e.target.value)}
-          />
-        </Field>
-        <Field label="Telephone">
-          <Telephone
-            value={telephone}
-            onChange={(e) => handleSetForm("telephone", e.target.value)}
-          />
-        </Field>
-        <Field label="Image">
-          <Image
-            alt="image"
-            updatePicture={(picture) => handleSetForm("picture", picture)}
-          />
-        </Field>
-      </main>
-      <div className="result">
-        <span className="title">Result</span>
-        <Field label="Radio">{radio}</Field>
-        <Field label="Dropdown">{dropdown}</Field>
-        <Field label="Telephone">{telephone}</Field>
-        <Field label="Image">
-          {picture?.image && (
-            <Picture image={picture.image} position={picture.position} />
-          )}
-        </Field>
+      <div className="forms">
+        <main className="form">
+          <span className="title">Form</span>
+          <Field label="Radio">
+            <Radio.Group
+              name="radios"
+              defaultChecked={radio}
+              options={RADIO_OPTIONS}
+              setRadio={(value) => handleSetForm("radio", value)}
+            />
+          </Field>
+          <Field label="Dropdown">
+            <Dropdown
+              defaultValue={dropdown}
+              options={DROPDOWN_OPTIONS}
+              onChange={(e) => handleSetForm("dropdown", e.target.value)}
+            />
+          </Field>
+          <Field label="Telephone">
+            <Telephone
+              value={telephone}
+              onChange={(e) => handleSetForm("telephone", e.target.value)}
+            />
+          </Field>
+          <Field label="Image">
+            <Image
+              alt="image"
+              updatePicture={(picture) => handleSetForm("picture", picture)}
+            />
+          </Field>
+        </main>
+        <div className="result">
+          <span className="title">Result</span>
+          <Field label="Radio">{radio}</Field>
+          <Field label="Dropdown">{dropdown}</Field>
+          <Field label="Telephone">{telephone}</Field>
+          <Field label="Image">
+            {picture?.image && (
+              <Picture image={picture.image} position={picture.position} />
+            )}
+          </Field>
+        </div>
       </div>
 
       <span className={`status ${statusClassName}`}>{status.message}</span>
