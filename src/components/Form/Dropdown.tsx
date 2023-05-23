@@ -10,7 +10,6 @@ interface Dropdown {
 export const Dropdown = ({ defaultValue, options, onChange }: Dropdown) => {
   return (
     <select
-      name="select"
       onChange={onChange}
       className="dropdown"
       defaultValue={defaultValue || options[0]}
